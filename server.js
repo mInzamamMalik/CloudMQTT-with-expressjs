@@ -5,8 +5,8 @@ const { url } = require('inspector');
 
 
 var options = { // https://stackoverflow.com/a/36460844/4378475
-    // port: 1883,
-    // host: 'mqtt://fantastic-hairdresser.cloudmqtt.com',
+    // port: 1883, 1883 for non secure port, 8883 for secure ssl port, 443 for websocket port
+    // host: 'mqtt://fantastic-hairdresser.cloudmqtt.com', 
     clientId: 'mqttjs_' + Math.random().toString(16).substr(2, 8),
     // username: 'axrmohhl',
     // password: 'B6Qo1CCA-qSl',
@@ -18,17 +18,12 @@ var options = { // https://stackoverflow.com/a/36460844/4378475
     encoding: 'utf8'
 };
 
-const URi = 'mqtt://axrmohhl:B6Qo1CCA-qSl@fantastic-hairdresser.cloudmqtt.com:1883'
+// if connecting with secure port start with 'mqtts:// ...' instead, and for socket port start with "wss:// ..."
+const URi = 'mqtts://axrmohhl:B6Qo1CCA-qSl@fantastic-hairdresser.cloudmqtt.com:8883'
 var client = mqtt.connect(URi, options);
 
 client.on('connect', function () {
-
     console.log("client is connected to broker");
-
-    client.subscribe('Topic07', () => {
-        console.log('client has subscribed successfully: ');
-    });
-
 });
 
 client.on('error', function (err) {
@@ -36,11 +31,13 @@ client.on('error', function (err) {
     console.log('Connection error: ', err);
 });
 
+client.subscribe('turnBulb', (data) => {
+    console.log('client has subscribed successfully: ', data);
+});
 
 client.on('message', function (topic, message) {
     console.log("message received on client", message.toString()); //if toString is not given, the message comes as buffer
 });
-
 
 
 app = express()

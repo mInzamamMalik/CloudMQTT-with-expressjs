@@ -1,15 +1,14 @@
 const express = require('express');
 const mqtt = require('mqtt');
 var bodyParser = require('body-parser');
-const { url } = require('inspector');
 
 
 var options = { // https://stackoverflow.com/a/36460844/4378475
     // port: 1883, 1883 for non secure port, 8883 for secure ssl port, 443 for websocket port
     // host: 'mqtt://fantastic-hairdresser.cloudmqtt.com', 
     clientId: 'mqttjs_' + Math.random().toString(16).substr(2, 8),
-    // username: 'axrmohhl',
-    // password: 'B6Qo1CCA-qSl',
+    // username: 'xxxxxx',
+    // password: 'xxxxxx',
     keepalive: 60,
     reconnectPeriod: 1000,
     protocolId: 'MQIsdp',
@@ -19,7 +18,7 @@ var options = { // https://stackoverflow.com/a/36460844/4378475
 };
 
 // if connecting with secure port start with 'mqtts:// ...' instead, and for socket port start with "wss:// ..."
-const URi = 'mqtts://axrmohhl:B6Qo1CCA-qSl@fantastic-hairdresser.cloudmqtt.com:8883'
+const URi = 'mqtts://xxxxxx:xxxxx@fantastic-hairdresser.cloudmqtt.com:8883'
 var client = mqtt.connect(URi, options);
 
 client.on('connect', function () {

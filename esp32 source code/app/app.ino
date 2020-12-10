@@ -5,16 +5,16 @@ PubSubClient pusSubClient(wifiClient);
 
 
 // Replace these with your SSID/Password
-const char* ssid = "phone";
-const char* password = "ios14beta";
+const char* ssid = "xxxx";
+const char* password = "xxxxx";
 
 
 // Add your MQTT Broker IP address, example:
 //const char* mqtt_server = "192.168.1.144";
 const char* mqttServer = "fantastic-hairdresser.cloudmqtt.com";
 const int mqttPort = 1883; // dont know yet how to connect with secure port or wss port
-const char* mqttUser = "axrmohhl";
-const char* mqttPassword = "B6Qo1CCA-qSl";
+const char* mqttUser = "xxxxx";
+const char* mqttPassword = "xxxxxx";
 
 
 

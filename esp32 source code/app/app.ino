@@ -12,7 +12,7 @@ const char* password = "ios14beta";
 // Add your MQTT Broker IP address, example:
 //const char* mqtt_server = "192.168.1.144";
 const char* mqttServer = "fantastic-hairdresser.cloudmqtt.com";
-const int mqttPort = 1883;
+const int mqttPort = 1883; // dont know yet how to connect with secure port or wss port
 const char* mqttUser = "axrmohhl";
 const char* mqttPassword = "B6Qo1CCA-qSl";
 
@@ -23,15 +23,14 @@ char msg[50];
 int value = 0;
 
 // LED Pin
-const int ledPin = 13 ;
+const int ledPin = 2 ;
 
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
   Serial.println();
-  Serial.println("Status\tHumidity (%)\tTemperature (C)\t(F)\tHeatIndex (C)\t(F)");
 
-  WiFi.begin("phone", "ios14beta");
+  WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED)
   {
     delay(500);
@@ -103,7 +102,7 @@ void reconnect() {
     if (pusSubClient.connect("ESP8266Client", mqttUser, mqttPassword )) {
       Serial.println("connected");
       // Subscribe
-      pusSubClient.subscribe("esp32/output");
+      pusSubClient.subscribe("turnBulb");
     } else {
       Serial.print("failed, rc=");
       Serial.print(pusSubClient.state());

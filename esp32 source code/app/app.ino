@@ -1,6 +1,7 @@
 #include <WiFi.h>
 #include <PubSubClient.h>
-WiFiClient espClient;
+WiFiClient wifiClient;
+PubSubClient pusSubClient(wifiClient);
 
 
 // Replace these with your SSID/Password
@@ -10,9 +11,13 @@ const char* password = "ios14beta";
 
 // Add your MQTT Broker IP address, example:
 //const char* mqtt_server = "192.168.1.144";
-const char* mqtt_server = "mqtts://axrmohhl:B6Qo1CCA-qSl@fantastic-hairdresser.cloudmqtt.com";
+const char* mqttServer = "fantastic-hairdresser.cloudmqtt.com";
+const int mqttPort = 1883;
+const char* mqttUser = "axrmohhl";
+const char* mqttPassword = "B6Qo1CCA-qSl";
 
-PubSubClient client(espClient);
+
+
 long lastMsg = 0;
 char msg[50];
 int value = 0;
@@ -26,7 +31,7 @@ void setup() {
   Serial.println();
   Serial.println("Status\tHumidity (%)\tTemperature (C)\t(F)\tHeatIndex (C)\t(F)");
 
-  WiFi.begin("Office", "Saylanimass100");
+  WiFi.begin("phone", "ios14beta");
   while (WiFi.status() != WL_CONNECTED)
   {
     delay(500);
@@ -40,17 +45,17 @@ void setup() {
   Serial.println(WiFi.localIP());
   pinMode(ledPin, OUTPUT);
 
-  client.setServer(mqtt_server, 1883);
-  client.setCallback(callback);
+  pusSubClient.setServer(mqttServer, mqttPort);
+  pusSubClient.setCallback(callback);
 }
 
 void loop() {
 
-  if (!client.connected()) {
+  if (!pusSubClient.connected()) {
     Serial.println("disconnected MQTT");
     reconnect();
   }
-  client.loop();
+  pusSubClient.loop();
 
   long now = millis();
   if (now - lastMsg > 5000) {
@@ -92,16 +97,16 @@ void callback(char* topic, byte* message, unsigned int length) {
 
 void reconnect() {
   // Loop until we're reconnected
-  while (!client.connected()) {
+  while (!pusSubClient.connected()) {
     Serial.print("Attempting MQTT connection...");
     // Attempt to connect
-    if (client.connect("ESP8266Client")) {
+    if (pusSubClient.connect("ESP8266Client", mqttUser, mqttPassword )) {
       Serial.println("connected");
       // Subscribe
-      client.subscribe("esp32/output");
+      pusSubClient.subscribe("esp32/output");
     } else {
       Serial.print("failed, rc=");
-      Serial.print(client.state());
+      Serial.print(pusSubClient.state());
       Serial.println(" try again in 5 seconds");
       // Wait 5 seconds before retrying
       delay(5000);
